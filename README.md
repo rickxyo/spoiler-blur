@@ -1,8 +1,10 @@
 <p align="center">
-  <img src="icons/128.png" width="80" alt="SpoilerBlur" />
+  <img src="docs/mascot.png" width="200" alt="Mascote do SpoilerBlur cobrindo os olhos com as mãos" />
 </p>
 
 <h1 align="center">SpoilerBlur</h1>
+
+<p align="center"><i>Você não viu nada.</i></p>
 
 <p align="center">
   Extensão para navegadores baseados em Chromium (Chrome, Brave, Edge, Opera...) que borra vídeos do YouTube e posts do X sobre os temas que você escolher.<br/>
@@ -10,10 +12,10 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Manifest-V3-555" alt="Manifest V3" />
-  <img src="https://img.shields.io/badge/licen%C3%A7a-MIT-555" alt="Licença MIT" />
-  <img src="https://img.shields.io/badge/coleta%20de%20dados-nenhuma-555" alt="Sem coleta de dados" />
-  <img src="https://img.shields.io/badge/depend%C3%AAncias-0-555" alt="Zero dependências" />
+  <img src="https://img.shields.io/badge/Manifest-V3-27272a?style=flat-square" alt="Manifest V3" />
+  <img src="https://img.shields.io/badge/licen%C3%A7a-MIT-27272a?style=flat-square" alt="Licença MIT" />
+  <img src="https://img.shields.io/badge/coleta%20de%20dados-nenhuma-27272a?style=flat-square" alt="Sem coleta de dados" />
+  <img src="https://img.shields.io/badge/depend%C3%AAncias-0-27272a?style=flat-square" alt="Zero dependências" />
 </p>
 
 <p align="center">
@@ -145,7 +147,7 @@ youtube.js      onde ficam os vídeos no YouTube + bloqueio do player
 x.js            onde ficam os posts no X
 content.css     visual do blur, etiquetas e botões
 popup.html/css/js  tela de configurações (cores e tamanhos como variáveis no topo do CSS)
-icons/          ícones
+icons/          ícones da extensão (16, 32, 48 e 128 px)
 docs/           prints usados neste README
 ```
 
