@@ -2,113 +2,49 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      width: 330px; margin: 0; padding: 16px;
-      background: #0f0f10; color: #f1f1f1;
-      font: 13px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    }
-    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    h1 { font-size: 15px; margin: 0; }
-    .muted { color: #9a9aa0; font-size: 12px; }
-    .switch { position: relative; width: 40px; height: 22px; flex: none; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; inset: 0; background: #3a3a3f; border-radius: 999px; cursor: pointer; transition: .15s; }
-    .slider::before { content: ""; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .15s; }
-    .switch input:checked + .slider { background: #f1f1f1; }
-    .switch input:checked + .slider::before { background: #0f0f0f; }
-    .switch input:checked + .slider::before { transform: translateX(18px); }
-
-    form { display: flex; gap: 6px; }
-    input[type=text] {
-      flex: 1; min-width: 0; padding: 8px 10px; border-radius: 8px; border: 1px solid #2c2c31;
-      background: #18181b; color: #fff; outline: none; font: inherit;
-    }
-    input[type=text]:focus { border-color: #6a6a70; }
-    button {
-      padding: 8px 12px; border: 0; border-radius: 8px; cursor: pointer;
-      background: #f1f1f1; color: #0f0f0f; font: 600 13px system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    }
-    button.ghost { background: #232328; color: #ddd; font-weight: 500; }
-    .hint { margin: 6px 0 12px; }
-    .section { margin-bottom: 6px; font-weight: 600; }
-
-    /* grupos */
-    .groups { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-    .group { border: 1px solid #26262b; border-radius: 10px; background: #151518; }
-    .group.open { border-color: #3a3a40; }
-    .head { display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 10px; cursor: pointer; user-select: none; }
-    .chev { width: 10px; color: #8a8a90; transition: transform .15s; font-size: 10px; }
-    .group.open .chev { transform: rotate(90deg); }
-    .name { font-weight: 600; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .count { color: #8a8a90; font-size: 12px; white-space: nowrap; }
-    .icon-btn { padding: 2px 7px; background: transparent; color: #8a8a90; font-size: 15px; line-height: 1; border-radius: 6px; }
-    .icon-btn:hover { color: #fff; background: #26262b; }
-    .body { padding: 0 10px 10px; }
-    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
-    .chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 4px 3px 10px; border-radius: 999px; background: #232328; font-size: 12px; }
-    .chip .icon-btn { font-size: 13px; padding: 0 5px; }
-    .body form input { padding: 6px 9px; font-size: 12px; }
-    .body form button { padding: 6px 10px; font-size: 12px; }
-
-    .row { display: flex; gap: 6px; }
-    .row label { flex: 1; text-align: center; padding: 7px; border-radius: 8px; background: #18181b; border: 1px solid #2c2c31; cursor: pointer; }
-    .row input { display: none; }
-    .row label:has(input:checked) { border-color: #f1f1f1; background: #232328; color: #fff; }
-    /* sites: chips de marcação múltipla (diferente do "Modo", que é escolha única) */
-    .sites { display: flex; gap: 6px; margin-bottom: 14px; }
-    .site-chip { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px;
-      border-radius: 999px; border: 1px solid #2c2c31; color: #8a8a90; font-size: 12px; cursor: pointer; user-select: none; }
-    .site-chip input { display: none; }
-    .site-chip:hover { border-color: #3a3a40; color: #cfcfd4; }
-    .site-chip:has(input:checked) { border-color: #f1f1f1; background: #232328; color: #fff; }
-    .site-chip:has(input:checked)::before {
-      content: ""; width: 11px; height: 11px; background: currentColor;
-      -webkit-mask: var(--check) center / contain no-repeat; mask: var(--check) center / contain no-repeat;
-      --check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
-    }
-    /* olho do tema: riscado = borrando, aberto = pausado (ícones Lucide, ISC) */
-    .eye { width: 26px; height: 22px; display: inline-flex; align-items: center; justify-content: center; }
-    .eye::before { content: ""; width: 15px; height: 15px; background: currentColor;
-      -webkit-mask: var(--icon) center / contain no-repeat; mask: var(--icon) center / contain no-repeat; }
-    .eye.on { color: #f1f1f1; --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49'/%3E%3Cpath d='M14.084 14.158a3 3 0 0 1-4.242-4.242'/%3E%3Cpath d='M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143'/%3E%3Cpath d='m2 2 20 20'/%3E%3C/svg%3E"); }
-    .eye.off { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E"); }
-    .group.off .name, .group.off .chev { color: #6a6a70; }
-  </style>
+  <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
   <header>
     <div>
       <h1>SpoilerBlur</h1>
-      <div class="muted">Borra vídeos e posts por tema</div>
+      <p class="muted">Borra vídeos e posts por tema</p>
     </div>
-    <label class="switch" title="Ligar/desligar">
-      <input type="checkbox" id="enabled" />
+    <label class="switch" title="Ligar/desligar a extensão">
+      <input type="checkbox" id="enabled" aria-label="Ligar ou desligar a extensão" />
       <span class="slider"></span>
     </label>
   </header>
 
-  <div class="section">Temas</div>
-  <form id="form">
-    <input type="text" id="kw" placeholder="Novo tema, ex.: One Piece" autocomplete="off" />
-    <button type="submit">Criar</button>
-  </form>
-  <div class="muted hint">Abra um tema para adicionar variações (outros nomes pelo qual ele aparece).</div>
-  <div class="groups" id="groups"></div>
+  <section>
+    <h2>Temas</h2>
+    <form id="form" class="field-row">
+      <input type="text" id="kw" class="input" placeholder="Novo tema, ex.: One Piece" autocomplete="off" aria-label="Nome do novo tema" />
+      <button type="submit" class="btn btn-primary">Criar</button>
+    </form>
+    <div class="groups" id="groups"></div>
+  </section>
 
-  <div class="section">Sites</div>
-  <div class="sites">
-    <label class="site-chip"><input type="checkbox" data-site="youtube" />YouTube</label>
-    <label class="site-chip"><input type="checkbox" data-site="x" />X</label>
+  <section>
+    <h2>Sites</h2>
+    <div class="sites">
+      <label class="site-chip"><input type="checkbox" class="visually-hidden" data-site="youtube" /><span class="icon xs i-check"></span>YouTube</label>
+      <label class="site-chip"><input type="checkbox" class="visually-hidden" data-site="x" /><span class="icon xs i-check"></span>X</label>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="mode-label">Modo</h2>
+    <div class="segmented" role="radiogroup" aria-labelledby="mode-label">
+      <label><input type="radio" class="visually-hidden" name="mode" value="blur" />Borrar</label>
+      <label><input type="radio" class="visually-hidden" name="mode" value="hide" />Esconder</label>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status" hidden>
+    <span class="toast-msg" id="toast-msg"></span>
+    <button type="button" class="btn btn-ghost btn-sm" id="toast-undo">Desfazer</button>
   </div>
-
-  <div class="section">Modo</div>
-  <div class="row">
-    <label><input type="radio" name="mode" value="blur" /><span>Borrar</span></label>
-    <label><input type="radio" name="mode" value="hide" /><span>Esconder</span></label>
-  </div>
-
 
   <script src="storage.js"></script>
   <script src="popup.js"></script>

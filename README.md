@@ -139,12 +139,12 @@ A extensão vem sem nenhum tema: você cria só os que quiser.
 
 ```
 manifest.json   configuração da extensão (permissões e sites)
-storage.js      configurações padrão e leitura/migração dos dados salvos
+storage.js      configurações padrão e leitura dos dados salvos
 core.js         lógica comum: busca dos temas, blur, revelar/borrar
 youtube.js      onde ficam os vídeos no YouTube + bloqueio do player
 x.js            onde ficam os posts no X
 content.css     visual do blur, etiquetas e botões
-popup.html/js   tela de configurações da extensão
+popup.html/css/js  tela de configurações (cores e tamanhos como variáveis no topo do CSS)
 icons/          ícones
 docs/           prints usados neste README
 ```
