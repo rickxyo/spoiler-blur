@@ -1,0 +1,191 @@
+/* ícone olho riscado (Lucide, ISC) */
+.sb-pill::before,
+.sb-icon {
+  --sb-eye-off: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49'/%3E%3Cpath d='M14.084 14.158a3 3 0 0 1-4.242-4.242'/%3E%3Cpath d='M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143'/%3E%3Cpath d='m2 2 20 20'/%3E%3C/svg%3E");
+  background-color: currentColor;
+  -webkit-mask: var(--sb-eye-off) center / contain no-repeat;
+  mask: var(--sb-eye-off) center / contain no-repeat;
+}
+
+/* ---------- cards ---------- */
+.sb-match {
+  position: relative !important;
+}
+.sb-match:not(.sb-revealed) {
+  overflow: hidden !important;
+  border-radius: 12px;
+}
+
+.sb-match:not(.sb-revealed) > *:not(.sb-overlay) {
+  filter: blur(22px) brightness(0.75) saturate(0.6);
+  pointer-events: none !important;
+  user-select: none;
+}
+
+.sb-hide { display: none !important; }
+
+.sb-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.sb-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: calc(100% - 24px);
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(15, 15, 15, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.92);
+  font: 500 13px/30px Roboto, Arial, sans-serif;
+  letter-spacing: 0;
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.15s, border-color 0.15s;
+}
+.sb-pill::before {
+  content: "";
+  flex: none;
+  width: 15px;
+  height: 15px;
+}
+.sb-pill::after {
+  content: attr(data-kw);
+  display: block;
+  line-height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sb-overlay:hover .sb-pill {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: transparent;
+  color: #0f0f0f;
+}
+.sb-overlay:hover .sb-pill::after { content: "Revelar"; }
+
+/* ---------- página do vídeo ---------- */
+.sb-watch-guarded #movie_player video,
+.sb-watch-guarded #shorts-player video,
+.sb-watch-guarded ytd-watch-metadata,
+.sb-watch-guarded ytd-reel-video-renderer[is-active] .ytShortsVideoTitleViewModelShortsVideoTitle {
+  filter: blur(28px) !important;
+}
+
+.sb-player-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  background: rgba(10, 10, 10, 0.72);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  color: #fff;
+  font-family: Roboto, Arial, sans-serif;
+  text-align: center;
+}
+.sb-player-icon {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 4px;
+  opacity: 0.85;
+}
+.sb-player-title { font-size: 20px; font-weight: 600; }
+.sb-player-sub { font-size: 14px; color: rgba(255, 255, 255, 0.65); }
+.sb-player-btn {
+  margin-top: 10px;
+  padding: 9px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font: 500 14px Roboto, Arial, sans-serif;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.sb-player-btn:hover { background: #fff; color: #0f0f0f; }
+
+/* ---------- card revelado: selo pra borrar de novo ---------- */
+ytd-thumbnail:has(> .sb-badge),
+yt-thumbnail-view-model:has(> .sb-badge),
+a#thumbnail:has(> .sb-badge),
+[data-testid]:has(> .sb-badge) { position: relative; }
+
+.sb-badge {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font: 500 12px/22px Roboto, Arial, sans-serif;
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.sb-badge::after { content: "Borrar"; }
+.sb-badge .sb-icon { width: 12px; height: 12px; flex: none; }
+.sb-badge:hover { background: #fff; color: #0f0f0f; }
+.sb-badge-card { top: 8px; bottom: auto; }
+
+/* ---------- player revelado: botão "Ocultar" ---------- */
+.sb-player-rehide {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2000;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(15, 15, 15, 0.6);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font: 500 13px/30px Roboto, Arial, sans-serif;
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.15s, color 0.15s;
+}
+.sb-player-rehide .sb-icon { width: 14px; height: 14px; }
+#movie_player:hover .sb-player-rehide,
+#movie_player.paused-mode .sb-player-rehide,
+#shorts-player:hover .sb-player-rehide { opacity: 1; }
+.sb-player-rehide:hover { background: #fff; color: #0f0f0f; }
+
+/* ---------- X ---------- */
+html[data-sb-site="x"] .sb-match:not(.sb-revealed),
+html[data-sb-site="x"] .sb-overlay { border-radius: 0; }
+html[data-sb-site="x"] .sb-pill { font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+/* selo em cima da mídia: canto superior esquerdo (embaixo fica o "ALT" do X) */
+html[data-sb-site="x"] .sb-badge { top: 8px; bottom: auto; font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+/* post só com texto: canto inferior esquerdo, abaixo do avatar */
+html[data-sb-site="x"] .sb-badge-card { top: auto; bottom: 12px; left: 16px; }

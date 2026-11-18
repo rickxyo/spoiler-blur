@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      width: 330px; margin: 0; padding: 16px;
+      background: #0f0f10; color: #f1f1f1;
+      font: 13px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    h1 { font-size: 15px; margin: 0; }
+    .muted { color: #9a9aa0; font-size: 12px; }
+    .switch { position: relative; width: 40px; height: 22px; flex: none; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; inset: 0; background: #3a3a3f; border-radius: 999px; cursor: pointer; transition: .15s; }
+    .slider::before { content: ""; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .15s; }
+    .switch input:checked + .slider { background: #f1f1f1; }
+    .switch input:checked + .slider::before { background: #0f0f0f; }
+    .switch input:checked + .slider::before { transform: translateX(18px); }
+
+    form { display: flex; gap: 6px; }
+    input[type=text] {
+      flex: 1; min-width: 0; padding: 8px 10px; border-radius: 8px; border: 1px solid #2c2c31;
+      background: #18181b; color: #fff; outline: none; font: inherit;
+    }
+    input[type=text]:focus { border-color: #6a6a70; }
+    button {
+      padding: 8px 12px; border: 0; border-radius: 8px; cursor: pointer;
+      background: #f1f1f1; color: #0f0f0f; font: 600 13px system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    button.ghost { background: #232328; color: #ddd; font-weight: 500; }
+    .hint { margin: 6px 0 12px; }
+    .section { margin-bottom: 6px; font-weight: 600; }
+
+    /* grupos */
+    .groups { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .group { border: 1px solid #26262b; border-radius: 10px; background: #151518; }
+    .group.open { border-color: #3a3a40; }
+    .head { display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 10px; cursor: pointer; user-select: none; }
+    .chev { width: 10px; color: #8a8a90; transition: transform .15s; font-size: 10px; }
+    .group.open .chev { transform: rotate(90deg); }
+    .name { font-weight: 600; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .count { color: #8a8a90; font-size: 12px; white-space: nowrap; }
+    .icon-btn { padding: 2px 7px; background: transparent; color: #8a8a90; font-size: 15px; line-height: 1; border-radius: 6px; }
+    .icon-btn:hover { color: #fff; background: #26262b; }
+    .body { padding: 0 10px 10px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 4px 3px 10px; border-radius: 999px; background: #232328; font-size: 12px; }
+    .chip .icon-btn { font-size: 13px; padding: 0 5px; }
+    .body form input { padding: 6px 9px; font-size: 12px; }
+    .body form button { padding: 6px 10px; font-size: 12px; }
+
+    .row { display: flex; gap: 6px; }
+    .row label { flex: 1; text-align: center; padding: 7px; border-radius: 8px; background: #18181b; border: 1px solid #2c2c31; cursor: pointer; }
+    .row input { display: none; }
+    .row label:has(input:checked) { border-color: #f1f1f1; background: #232328; color: #fff; }
+    .sites { display: flex; gap: 6px; margin-bottom: 14px; }
+    .site { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 7px 8px 7px 10px; border-radius: 8px; background: #18181b; border: 1px solid #2c2c31; cursor: pointer; }
+    .switch.sm { width: 30px; height: 17px; display: inline-block; }
+    .switch.sm .slider::before { width: 11px; height: 11px; top: 3px; left: 3px; }
+    .switch.sm input:checked + .slider::before { transform: translateX(13px); }
+    .wide { width: 100%; margin-top: 14px; padding: 9px; }
+    .center { text-align: center; margin-top: 6px; }
+    #reset.done { background: #f1f1f1; color: #0f0f0f; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>SpoilerBlur</h1>
+      <div class="muted">Borra vídeos e posts por tema</div>
+    </div>
+    <label class="switch" title="Ligar/desligar">
+      <input type="checkbox" id="enabled" />
+      <span class="slider"></span>
+    </label>
+  </header>
+
+  <div class="section">Temas</div>
+  <form id="form">
+    <input type="text" id="kw" placeholder="Novo tema, ex.: Copa do Mundo" autocomplete="off" />
+    <button type="submit">Criar</button>
+  </form>
+  <div class="muted hint">Abra um tema para adicionar variações (outros nomes pelo qual ele aparece).</div>
+  <div class="groups" id="groups"></div>
+
+  <div class="section">Sites</div>
+  <div class="sites">
+    <label class="site"><span>YouTube</span><span class="switch sm"><input type="checkbox" data-site="youtube" /><span class="slider"></span></span></label>
+    <label class="site"><span>X</span><span class="switch sm"><input type="checkbox" data-site="x" /><span class="slider"></span></span></label>
+  </div>
+
+  <div class="section">Modo</div>
+  <div class="row">
+    <label><input type="radio" name="mode" value="blur" /><span>Borrar</span></label>
+    <label><input type="radio" name="mode" value="hide" /><span>Esconder</span></label>
+  </div>
+
+  <button class="ghost wide" id="reset">Borrar tudo</button>
+  <div class="muted center">Volta a borrar todos os vídeos que você revelou</div>
+
+  <script src="storage.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
