@@ -16,7 +16,20 @@
   <img src="https://img.shields.io/badge/depend%C3%AAncias-0-555" alt="Zero dependências" />
 </p>
 
-<!-- Dica: adicione um print ou GIF aqui, ex.: <img src="docs/preview.png" /> -->
+<p align="center">
+  <img src="docs/youtube.png" alt="Vídeos sobre GTA 6 borrados na busca do YouTube" width="100%" />
+</p>
+
+<table>
+  <tr>
+    <td width="62%" align="center"><img src="docs/x.png" alt="Post sobre GTA 6 borrado no X" /></td>
+    <td width="38%" align="center"><img src="docs/popup.png" alt="Popup de configurações do SpoilerBlur" width="260" /></td>
+  </tr>
+  <tr>
+    <td align="center">Post borrado no X</td>
+    <td align="center">Temas, sites e modo no popup</td>
+  </tr>
+</table>
 
 ---
 
@@ -25,7 +38,7 @@
 Você cadastra um tema (ex.: **GTA 6**) e, se quiser, outras formas de escrever o mesmo assunto (**GTA VI**, **Grand Theft Auto 6**, **Leonida**...). A partir daí, no YouTube e no X:
 
 - **Thumbnails e títulos** que mencionam o tema ficam borrados, com uma etiqueta mostrando qual tema bateu.
-- **Posts do X** (texto, imagem e vídeo) ficam borrados, inclusive **reposts e quotes**.
+- **Posts do X** (texto, imagem e vídeo) ficam borrados, inclusive **reposts e quotes**, e os vídeos deles não dão autoplay.
 - **Ao abrir um vídeo** do tema, o player é pausado e coberto, com a opção "Assistir mesmo assim".
 - **Um clique revela**, e um selo "Borrar" permite esconder de novo quando quiser.
 - Você pode **borrar** ou **esconder** completamente, e ligar/desligar por site.
@@ -99,6 +112,10 @@ Baixe a versão nova, substitua a pasta, clique no botão de recarregar da exten
 
 Na página:
 
+<p align="center">
+  <img src="docs/revelar.png" alt="Botão Revelar ao passar o mouse sobre um vídeo borrado" width="380" />
+</p>
+
 - **Clique** num card borrado para revelar.
 - Clique no selo **Borrar** de um vídeo revelado para esconder de novo.
 - **Borrar tudo**, no popup, volta a esconder tudo o que você revelou.
@@ -122,6 +139,7 @@ x.js            onde ficam os posts no X
 content.css     visual do blur, etiquetas e botões
 popup.html/js   tela de configurações da extensão
 icons/          ícones
+docs/           prints usados neste README
 ```
 
 Para suportar outro site, basta criar um arquivo como o `x.js`, dizendo onde ficam os posts naquela página, e registrá-lo no `manifest.json`.
