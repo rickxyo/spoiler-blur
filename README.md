@@ -125,7 +125,7 @@ Na página:
 - Clique no selo **Borrar** de um vídeo revelado para esconder de novo.
 - **Borrar tudo**, no popup, volta a esconder tudo o que você revelou.
 
-A instalação já vem com um tema de exemplo, **GTA 6**, que pode ser apagado.
+A extensão vem sem nenhum tema: você cria só os que quiser.
 
 ## Limitações
 

@@ -82,7 +82,7 @@ function render() {
   const list = $('#groups');
   list.textContent = '';
   if (!state.groups.length) {
-    list.append(el('div', { className: 'muted', textContent: 'Nenhum tema ainda.' }));
+    list.append(el('div', { className: 'muted', textContent: 'Nenhum tema ainda. Crie o primeiro acima.' }));
   }
   state.groups.forEach((g) => {
     const node = renderGroup(g);
