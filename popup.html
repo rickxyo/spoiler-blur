@@ -56,13 +56,25 @@
     .row label { flex: 1; text-align: center; padding: 7px; border-radius: 8px; background: #18181b; border: 1px solid #2c2c31; cursor: pointer; }
     .row input { display: none; }
     .row label:has(input:checked) { border-color: #f1f1f1; background: #232328; color: #fff; }
+    /* sites: chips de marcação múltipla (diferente do "Modo", que é escolha única) */
     .sites { display: flex; gap: 6px; margin-bottom: 14px; }
-    .site { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 7px 8px 7px 10px; border-radius: 8px; background: #18181b; border: 1px solid #2c2c31; cursor: pointer; }
-    .switch.sm { width: 30px; height: 17px; display: inline-block; }
-    .switch.sm .slider::before { width: 11px; height: 11px; top: 3px; left: 3px; }
-    .switch.sm input:checked + .slider::before { transform: translateX(13px); }
+    .site-chip { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px;
+      border-radius: 999px; border: 1px solid #2c2c31; color: #8a8a90; font-size: 12px; cursor: pointer; user-select: none; }
+    .site-chip input { display: none; }
+    .site-chip:hover { border-color: #3a3a40; color: #cfcfd4; }
+    .site-chip:has(input:checked) { border-color: #f1f1f1; background: #232328; color: #fff; }
+    .site-chip:has(input:checked)::before {
+      content: ""; width: 11px; height: 11px; background: currentColor;
+      -webkit-mask: var(--check) center / contain no-repeat; mask: var(--check) center / contain no-repeat;
+      --check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+    }
+    /* olho do tema: riscado = borrando, aberto = pausado (ícones Lucide, ISC) */
+    .eye { width: 26px; height: 22px; display: inline-flex; align-items: center; justify-content: center; }
+    .eye::before { content: ""; width: 15px; height: 15px; background: currentColor;
+      -webkit-mask: var(--icon) center / contain no-repeat; mask: var(--icon) center / contain no-repeat; }
+    .eye.on { color: #f1f1f1; --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49'/%3E%3Cpath d='M14.084 14.158a3 3 0 0 1-4.242-4.242'/%3E%3Cpath d='M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143'/%3E%3Cpath d='m2 2 20 20'/%3E%3C/svg%3E"); }
+    .eye.off { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E"); }
     .group.off .name, .group.off .chev { color: #6a6a70; }
-    .head .switch.sm { margin-left: 2px; }
   </style>
 </head>
 <body>
@@ -87,8 +99,8 @@
 
   <div class="section">Sites</div>
   <div class="sites">
-    <label class="site"><span>YouTube</span><span class="switch sm"><input type="checkbox" data-site="youtube" /><span class="slider"></span></span></label>
-    <label class="site"><span>X</span><span class="switch sm"><input type="checkbox" data-site="x" /><span class="slider"></span></span></label>
+    <label class="site-chip"><input type="checkbox" data-site="youtube" />YouTube</label>
+    <label class="site-chip"><input type="checkbox" data-site="x" />X</label>
   </div>
 
   <div class="section">Modo</div>

@@ -40,11 +40,12 @@ function renderGroup(g) {
 
   // liga/desliga o tema sem apagar (desligado = nada desse tema é borrado)
   const on = g.enabled !== false;
-  const toggleInput = el('input', { type: 'checkbox', checked: on });
-  const toggle = el('label', { className: 'switch sm', title: on ? 'Pausar tema' : 'Ativar tema' },
-    [toggleInput, el('span', { className: 'slider' })]);
-  toggle.onclick = (e) => e.stopPropagation();
-  toggleInput.onchange = () => { g.enabled = toggleInput.checked; save(); };
+  const toggle = el('button', {
+    className: 'icon-btn eye ' + (on ? 'on' : 'off'),
+    title: on ? 'Pausar tema' : 'Ativar tema'
+  });
+  toggle.setAttribute('aria-pressed', String(on));
+  toggle.onclick = (e) => { e.stopPropagation(); g.enabled = !on; save(); };
 
   const head = el('div', { className: 'head' }, [
     el('span', { className: 'chev', textContent: '▶' }),
