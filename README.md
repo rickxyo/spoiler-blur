@@ -110,6 +110,11 @@ Baixe a versão nova, substitua a pasta, clique no botão de recarregar da exten
 3. Clique no tema para abrir e adicionar mais variações (outros nomes pelo qual o assunto aparece).
 4. Escolha o modo (**Borrar** ou **Esconder**) e em quais sites ela deve funcionar.
 
+<p align="center">
+  <img src="docs/grupos.png" alt="Tema GTA 6 aberto no popup, com suas variações" width="320" /><br/>
+  <sub>Um tema com suas variações: qualquer uma delas faz o vídeo ou post ser borrado, e a etiqueta mostra o nome do tema.</sub>
+</p>
+
 Na página:
 
 <p align="center">
