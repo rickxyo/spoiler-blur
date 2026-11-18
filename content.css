@@ -161,8 +161,8 @@ a#thumbnail:has(> .sb-badge),
 
 .sb-badge {
   position: absolute;
+  top: 8px;   /* canto superior esquerdo: longe da duração e da barra de progresso */
   left: 8px;
-  bottom: 8px;
   z-index: 9999;
   display: inline-flex;
   align-items: center;
@@ -183,7 +183,6 @@ a#thumbnail:has(> .sb-badge),
 .sb-badge .sb-icon { width: 12px; height: 12px; flex: none; }
 .sb-badge:hover { background: var(--sb-primary); color: var(--sb-primary-fg); }
 .sb-badge:active { transform: scale(0.95); }
-.sb-badge-card { top: 8px; bottom: auto; }
 
 /* ---------- player revelado: botão "Ocultar" ---------- */
 .sb-player-rehide {
@@ -222,8 +221,6 @@ html[data-sb-site="x"] {
 }
 html[data-sb-site="x"] [data-sb="blur"],
 html[data-sb-site="x"] .sb-overlay { border-radius: 0; }
-/* selo em cima da mídia: canto superior esquerdo (embaixo fica o "ALT" do X) */
-html[data-sb-site="x"] .sb-badge { top: 8px; bottom: auto; }
 /* post só com texto: canto inferior esquerdo, abaixo do avatar */
 html[data-sb-site="x"] .sb-badge-card { top: auto; bottom: 12px; left: 16px; }
 
