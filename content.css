@@ -8,26 +8,27 @@
 }
 
 /* ---------- cards ---------- */
-.sb-match {
+[data-sb] {
   position: relative !important;
+  isolation: isolate; /* o z-index dos controles fica restrito ao card */
 }
-.sb-match:not(.sb-revealed) {
+[data-sb="blur"] {
   overflow: hidden !important;
   border-radius: 12px;
 }
 
-.sb-match:not(.sb-revealed) > *:not(.sb-overlay) {
+[data-sb="blur"] > *:not(.sb-overlay) {
   filter: blur(22px) brightness(0.75) saturate(0.6);
   pointer-events: none !important;
   user-select: none;
 }
 
-.sb-hide { display: none !important; }
+[data-sb="hide"] { display: none !important; }
 
 .sb-overlay {
   position: absolute;
   inset: 0;
-  z-index: 50;
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -131,7 +132,7 @@ a#thumbnail:has(> .sb-badge),
   position: absolute;
   left: 8px;
   bottom: 8px;
-  z-index: 60;
+  z-index: 9999;
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -182,7 +183,7 @@ a#thumbnail:has(> .sb-badge),
 .sb-player-rehide:hover { background: #fff; color: #0f0f0f; }
 
 /* ---------- X ---------- */
-html[data-sb-site="x"] .sb-match:not(.sb-revealed),
+html[data-sb-site="x"] [data-sb="blur"],
 html[data-sb-site="x"] .sb-overlay { border-radius: 0; }
 html[data-sb-site="x"] .sb-pill { font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
 /* selo em cima da mídia: canto superior esquerdo (embaixo fica o "ALT" do X) */

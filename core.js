@@ -49,16 +49,33 @@
     return parts.join(' ');
   }
 
+  // O estado fica num atributo data-sb (blur | revealed | hide), não em classes:
+  // o React do X reescreve o className dos posts e apagaria as classes da extensão.
+  const revealedNoId = new WeakSet(); // cards sem id que o usuário revelou
+
   function clearCard(el) {
-    el.classList.remove('sb-match', 'sb-hide', 'sb-revealed');
+    delete el.dataset.sb;
     el.querySelectorAll(':scope > .sb-overlay, .sb-badge').forEach((o) => o.remove());
   }
 
-  const swallowHover = (node) =>
-    ['mousedown', 'mouseup', 'pointerdown', 'mouseover', 'mousemove'].forEach((t) =>
-      node.addEventListener(t, (e) => e.stopPropagation(), true)
-    );
-  const block = (e) => { e.preventDefault(); e.stopPropagation(); };
+  // o DOM ainda está como a extensão deixou? (o site pode ter redesenhado o card)
+  function intact(el, state) {
+    if ((el.dataset.sb || '') !== state) return false;
+    if (state === 'blur') return !!el.querySelector(':scope > .sb-overlay');
+    if (state === 'revealed') return !!el.querySelector('.sb-badge');
+    return true;
+  }
+
+  function makeBadge(id) {
+    const badge = document.createElement('div');
+    badge.className = 'sb-badge';
+    badge.title = 'Borrar de novo';
+    if (id) badge.dataset.sbId = id;
+    const icon = document.createElement('span');
+    icon.className = 'sb-icon';
+    badge.appendChild(icon);
+    return badge;
+  }
 
   function processCard(el) {
     // evita processar um card dentro de outro (ex.: rich-item > lockup)
@@ -66,50 +83,39 @@
 
     const text = defaultText(el);
     const prev = cache.get(el);
-    if (prev && prev.text === text && prev.ver === SB.version) return;
-    cache.set(el, { text, ver: SB.version });
+    if (prev && prev.text === text && prev.ver === SB.version && intact(el, prev.state)) return;
 
     clearCard(el);
     const m = SB.findMatch(text);
-    if (!m) return;
+    let state = '';
 
-    const id = adapter.getId(el);
-    el.classList.add('sb-match');
-    if (SB.settings.mode === 'hide') {
-      el.classList.add('sb-hide');
-      return;
+    if (m) {
+      const id = adapter.getId(el);
+      if (SB.settings.mode === 'hide') {
+        state = 'hide';
+      } else if (id ? SB.revealed.has(id) : revealedNoId.has(el)) {
+        // selo para borrar de novo, em cima da mídia quando houver
+        state = 'revealed';
+        const host = adapter.badgeHost(el);
+        const badge = makeBadge(id);
+        if (!host) badge.classList.add('sb-badge-card');
+        (host || el).appendChild(badge);
+      } else {
+        state = 'blur';
+        const ov = document.createElement('div');
+        ov.className = 'sb-overlay';
+        if (id) ov.dataset.sbId = id;
+        const pill = document.createElement('span');
+        pill.className = 'sb-pill';
+        pill.dataset.kw = m.label; // texto vai via CSS, pra não "sujar" o textContent do card
+        ov.appendChild(pill);
+        el.appendChild(ov);
+        el.querySelectorAll('video').forEach((v) => { if (!v.paused) v.pause(); });
+      }
+      if (state) el.dataset.sb = state;
     }
 
-    if (id && SB.revealed.has(id)) {
-      // selo para borrar de novo, em cima da mídia quando houver
-      el.classList.add('sb-revealed');
-      const host = adapter.badgeHost(el);
-      const badge = document.createElement('div');
-      badge.className = 'sb-badge' + (host ? '' : ' sb-badge-card');
-      badge.title = 'Borrar de novo';
-      const icon = document.createElement('span');
-      icon.className = 'sb-icon';
-      badge.appendChild(icon);
-      swallowHover(badge);
-      badge.addEventListener('click', (e) => { block(e); SB.toggleReveal(id); }, true);
-      (host || el).appendChild(badge);
-      return;
-    }
-
-    const ov = document.createElement('div');
-    ov.className = 'sb-overlay';
-    const pill = document.createElement('span');
-    pill.className = 'sb-pill';
-    pill.dataset.kw = m.label; // texto vai via CSS, pra não "sujar" o textContent do card
-    ov.appendChild(pill);
-    swallowHover(ov);
-    ov.addEventListener('click', (e) => {
-      block(e);
-      if (!id) { el.classList.toggle('sb-revealed'); ov.remove(); return; }
-      SB.toggleReveal(id);
-    }, true);
-    el.appendChild(ov);
-    el.querySelectorAll('video').forEach((v) => { if (!v.paused) v.pause(); });
+    cache.set(el, { text, ver: SB.version, state });
   }
 
   // revela/borra de novo e atualiza tudo que for desse id
@@ -120,10 +126,35 @@
     scan();
   };
 
+  // Cliques nos controles da extensão são tratados na fase de captura da janela,
+  // antes de qualquer handler do site (o X captura cliques na raiz da página).
+  const CONTROL_SEL = '.sb-overlay, .sb-badge';
+  const controlOf = (e) => (e.target instanceof Element ? e.target.closest(CONTROL_SEL) : null);
+
+  ['pointerdown', 'pointerup', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'dblclick', 'auxclick',
+   'mouseover', 'mouseout', 'mousemove', 'pointerover', 'pointermove'].forEach((t) =>
+    window.addEventListener(t, (e) => { if (controlOf(e)) e.stopPropagation(); }, { capture: true })
+  );
+
+  window.addEventListener('click', (e) => {
+    const ctrl = controlOf(e);
+    if (!ctrl) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    const id = ctrl.dataset.sbId;
+    if (id) { SB.toggleReveal(id); return; }
+    const card = ctrl.closest('[data-sb]');
+    if (!card) return;
+    if (revealedNoId.has(card)) revealedNoId.delete(card);
+    else revealedNoId.add(card);
+    cache.delete(card);
+    processCard(card);
+  }, { capture: true });
+
   // vídeo dentro de card borrado não toca (autoplay do X, previews)
   document.addEventListener('play', (e) => {
     const v = e.target;
-    if (v instanceof HTMLVideoElement && v.closest('.sb-match:not(.sb-revealed)')) v.pause();
+    if (v instanceof HTMLVideoElement && v.closest('[data-sb="blur"]')) v.pause();
   }, true);
 
   // ---------- loop ----------
