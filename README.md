@@ -106,7 +106,7 @@ Baixe a versão nova, substitua a pasta, clique no botão de recarregar da exten
 ## Como usar
 
 1. Clique no ícone da extensão.
-2. Digite um tema e clique em **Criar**. Dica: `Copa do Mundo, copa 2026, fifa` cria o tema já com duas variações.
+2. Digite um tema e clique em **Criar**. Dica: separe por vírgula para já criar com variações, ex.: `One Piece, luffy, gear 5` ou `GTA 6, gta vi, leonida`.
 3. Clique no tema para abrir e adicionar mais variações (outros nomes pelo qual o assunto aparece).
 4. Escolha o modo (**Borrar** ou **Esconder**) e em quais sites ela deve funcionar.
 
