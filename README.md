@@ -5,8 +5,8 @@
 <h1 align="center">SpoilerBlur</h1>
 
 <p align="center">
-  Extensão para Chrome e Brave que borra vídeos do YouTube e posts do X sobre os temas que <b>você</b> escolher.<br/>
-  Feita para fugir de spoilers do GTA 6, mas funciona para qualquer assunto.
+  Extensão para navegadores baseados em Chromium (Chrome, Brave, Edge, Opera...) que borra vídeos do YouTube e posts do X sobre os temas que você escolher.<br/>
+  Feita para fugir de qualquer spoiler.
 </p>
 
 <p align="center">
