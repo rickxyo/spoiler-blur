@@ -38,10 +38,19 @@ function renderGroup(g) {
     save();
   };
 
+  // liga/desliga o tema sem apagar (desligado = nada desse tema é borrado)
+  const on = g.enabled !== false;
+  const toggleInput = el('input', { type: 'checkbox', checked: on });
+  const toggle = el('label', { className: 'switch sm', title: on ? 'Pausar tema' : 'Ativar tema' },
+    [toggleInput, el('span', { className: 'slider' })]);
+  toggle.onclick = (e) => e.stopPropagation();
+  toggleInput.onchange = () => { g.enabled = toggleInput.checked; save(); };
+
   const head = el('div', { className: 'head' }, [
     el('span', { className: 'chev', textContent: '▶' }),
     el('span', { className: 'name', textContent: g.name, title: g.name }),
-    el('span', { className: 'count', textContent: countLabel(g.terms.length) }),
+    el('span', { className: 'count', textContent: on ? countLabel(g.terms.length) : 'pausado' }),
+    toggle,
     remove
   ]);
   head.onclick = () => {
@@ -49,7 +58,7 @@ function renderGroup(g) {
     render();
   };
 
-  const box = el('div', { className: 'group' + (isOpen ? ' open' : '') }, [head]);
+  const box = el('div', { className: 'group' + (isOpen ? ' open' : '') + (on ? '' : ' off') }, [head]);
   if (!isOpen) return box;
 
   const chips = el('div', { className: 'chips' });
@@ -121,10 +130,3 @@ document.querySelectorAll('input[name=mode]').forEach((r) =>
   r.addEventListener('change', (e) => { state.mode = e.target.value; save(); })
 );
 
-$('#reset').addEventListener('click', (e) => {
-  chrome.storage.local.set({ resetAt: Date.now() });
-  const b = e.currentTarget;
-  b.textContent = 'Pronto, tudo borrado';
-  b.classList.add('done');
-  setTimeout(() => { b.textContent = 'Borrar tudo'; b.classList.remove('done'); }, 1500);
-});

@@ -20,7 +20,7 @@
   // "gta 6", "GTA6", "gta-6" casam entre si; "gta 60" e "gta vice" não casam com "gta vi"
   function buildPatterns() {
     patterns = [];
-    (SB.settings.groups || []).forEach((g) => {
+    (SB.settings.groups || []).filter((g) => g.enabled !== false).forEach((g) => {
       [g.name, ...(g.terms || [])].forEach((term) => {
         const compact = norm(term).replace(/ /g, '');
         if (compact) patterns.push({ label: g.name, re: new RegExp('\\b' + compact.split('').join(' ?') + '\\b') });
@@ -184,14 +184,8 @@
     document.documentElement.dataset.sbSite = a.site;
     sbLoad(applySettings);
 
-    chrome.storage.onChanged.addListener((changes, area) => {
+    chrome.storage.onChanged.addListener((_, area) => {
       if (area === 'sync') sbLoad(applySettings);
-      // botão "Borrar tudo" do popup
-      if (area === 'local' && changes.resetAt) {
-        SB.revealed.clear();
-        SB.version++;
-        scan();
-      }
     });
 
     new MutationObserver(SB.schedule).observe(document.documentElement, { childList: true, subtree: true });

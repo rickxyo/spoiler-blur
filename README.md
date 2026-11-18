@@ -41,6 +41,7 @@ Você cadastra um tema (ex.: **GTA 6**) e, se quiser, outras formas de escrever 
 - **Posts do X** (texto, imagem e vídeo) ficam borrados, inclusive **reposts e quotes**, e os vídeos deles não dão autoplay.
 - **Ao abrir um vídeo** do tema, o player é pausado e coberto, com a opção "Assistir mesmo assim".
 - **Um clique revela**, e um selo "Borrar" permite esconder de novo quando quiser.
+- Cada tema tem um **liga/desliga**: pause um assunto (e libere tudo dele de uma vez) sem precisar apagá-lo.
 - Você pode **borrar** ou **esconder** completamente, e ligar/desligar por site.
 - Tudo atualiza **na hora**, sem precisar recarregar a página.
 
@@ -109,6 +110,7 @@ Baixe a versão nova, substitua a pasta, clique no botão de recarregar da exten
 2. Digite um tema e clique em **Criar**. Dica: separe por vírgula para já criar com variações, ex.: `One Piece, luffy, gear 5` ou `GTA 6, gta vi, leonida`.
 3. Clique no tema para abrir e adicionar mais variações (outros nomes pelo qual o assunto aparece).
 4. Escolha o modo (**Borrar** ou **Esconder**) e em quais sites ela deve funcionar.
+5. Use o botão ao lado de cada tema para pausá-lo ou ativá-lo de novo, sem perder as variações.
 
 <p align="center">
   <img src="docs/grupos.png" alt="Tema GTA 6 aberto no popup, com suas variações" width="320" /><br/>
@@ -123,7 +125,7 @@ Na página:
 
 - **Clique** num card borrado para revelar.
 - Clique no selo **Borrar** de um vídeo revelado para esconder de novo.
-- **Borrar tudo**, no popup, volta a esconder tudo o que você revelou.
+- Recarregar a página volta a borrar tudo o que você revelou.
 
 A extensão vem sem nenhum tema: você cria só os que quiser.
 
