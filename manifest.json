@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "SpoilerBlur",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Borra vídeos e posts do YouTube e do X sobre os temas que você escolher.",
   "permissions": ["storage"],
   "action": {

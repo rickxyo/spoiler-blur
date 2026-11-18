@@ -1,3 +1,28 @@
+/* SpoilerBlur — estilos injetados no YouTube e no X
+   Mesmos tokens do popup, com prefixo --sb- para não colidir com as variáveis dos sites. */
+
+:root {
+  --sb-fg: #fafafa;
+  --sb-primary: #fafafa;
+  --sb-primary-fg: #09090b;
+  --sb-glass: rgba(9, 9, 11, 0.55);        /* pílulas e botões sobre a mídia */
+  --sb-glass-strong: rgba(9, 9, 11, 0.72); /* tela do player bloqueado */
+  --sb-glass-border: rgba(250, 250, 250, 0.14);
+  --sb-muted: rgba(250, 250, 250, 0.65);
+
+  --sb-h: 32px;
+  --sb-h-sm: 28px;
+  --sb-h-xs: 22px;
+  --sb-radius-card: 12px;
+  --sb-radius-badge: 4px;  /* igual ao selo de duração do YouTube */
+  --sb-pill: 999px;
+
+  --sb-text: 13px;
+  --sb-text-sm: 12px;
+  --sb-font: Roboto, "Segoe UI", -apple-system, Arial, sans-serif;
+  --sb-fast: 0.15s;
+}
+
 /* ícone olho riscado (Lucide, ISC) */
 .sb-pill::before,
 .sb-icon {
@@ -14,14 +39,16 @@
 }
 [data-sb="blur"] {
   overflow: hidden !important;
-  border-radius: 12px;
+  border-radius: var(--sb-radius-card);
 }
 
+/* borrar é instantâneo (nunca mostra o spoiler); só o revelar é animado */
 [data-sb="blur"] > *:not(.sb-overlay) {
   filter: blur(22px) brightness(0.75) saturate(0.6);
   pointer-events: none !important;
   user-select: none;
 }
+[data-sb="revealed"] > * { transition: filter 0.25s ease-out; }
 
 [data-sb="hide"] { display: none !important; }
 
@@ -33,7 +60,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border-radius: 12px;
+  border-radius: var(--sb-radius-card);
 }
 
 .sb-pill {
@@ -41,19 +68,19 @@
   align-items: center;
   gap: 8px;
   max-width: calc(100% - 24px);
-  height: 30px;
+  height: var(--sb-h);
   padding: 0 12px;
-  border-radius: 999px;
-  background: rgba(15, 15, 15, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--sb-pill);
+  background: var(--sb-glass);
+  border: 1px solid var(--sb-glass-border);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-  color: rgba(255, 255, 255, 0.92);
-  font: 500 13px/30px Roboto, Arial, sans-serif;
+  color: var(--sb-fg);
+  font: 500 var(--sb-text)/var(--sb-h) var(--sb-font);
   letter-spacing: 0;
   white-space: nowrap;
   -webkit-font-smoothing: antialiased;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background-color var(--sb-fast), border-color var(--sb-fast), color var(--sb-fast), transform var(--sb-fast);
 }
 .sb-pill::before {
   content: "";
@@ -64,17 +91,18 @@
 .sb-pill::after {
   content: attr(data-kw);
   display: block;
-  line-height: 30px;
+  line-height: var(--sb-h);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .sb-overlay:hover .sb-pill {
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--sb-primary);
   border-color: transparent;
-  color: #0f0f0f;
+  color: var(--sb-primary-fg);
 }
 .sb-overlay:hover .sb-pill::after { content: "Revelar"; }
+.sb-overlay:active .sb-pill { transform: scale(0.97); }
 
 /* ---------- página do vídeo ---------- */
 .sb-watch-guarded #movie_player video,
@@ -94,12 +122,13 @@
   justify-content: center;
   gap: 8px;
   padding: 24px;
-  background: rgba(10, 10, 10, 0.72);
+  background: var(--sb-glass-strong);
   -webkit-backdrop-filter: blur(24px);
   backdrop-filter: blur(24px);
-  color: #fff;
-  font-family: Roboto, Arial, sans-serif;
+  color: var(--sb-fg);
+  font-family: var(--sb-font);
   text-align: center;
+  animation: sb-fade-in 0.2s ease-out;
 }
 .sb-player-icon {
   width: 28px;
@@ -108,19 +137,21 @@
   opacity: 0.85;
 }
 .sb-player-title { font-size: 20px; font-weight: 600; }
-.sb-player-sub { font-size: 14px; color: rgba(255, 255, 255, 0.65); }
+.sb-player-sub { font-size: 14px; color: var(--sb-muted); }
 .sb-player-btn {
   margin-top: 10px;
-  padding: 9px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  font: 500 14px Roboto, Arial, sans-serif;
+  height: 36px;
+  padding: 0 18px;
+  border: 1px solid var(--sb-glass-border);
+  border-radius: var(--sb-pill);
+  background: rgba(250, 250, 250, 0.08);
+  color: var(--sb-fg);
+  font: 500 14px var(--sb-font);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background-color var(--sb-fast), color var(--sb-fast), transform var(--sb-fast);
 }
-.sb-player-btn:hover { background: #fff; color: #0f0f0f; }
+.sb-player-btn:hover { background: var(--sb-primary); color: var(--sb-primary-fg); }
+.sb-player-btn:active { transform: scale(0.97); }
 
 /* ---------- card revelado: selo pra borrar de novo ---------- */
 ytd-thumbnail:has(> .sb-badge),
@@ -136,20 +167,22 @@ a#thumbnail:has(> .sb-badge),
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  height: 22px;
+  height: var(--sb-h-xs);
   padding: 0 7px;
-  border-radius: 4px;
+  border-radius: var(--sb-radius-badge);
   background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  font: 500 12px/22px Roboto, Arial, sans-serif;
+  color: var(--sb-fg);
+  font: 500 var(--sb-text-sm)/var(--sb-h-xs) var(--sb-font);
   white-space: nowrap;
   -webkit-font-smoothing: antialiased;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background-color var(--sb-fast), color var(--sb-fast), transform var(--sb-fast);
+  animation: sb-fade-in 0.2s ease-out;
 }
 .sb-badge::after { content: "Borrar"; }
 .sb-badge .sb-icon { width: 12px; height: 12px; flex: none; }
-.sb-badge:hover { background: #fff; color: #0f0f0f; }
+.sb-badge:hover { background: var(--sb-primary); color: var(--sb-primary-fg); }
+.sb-badge:active { transform: scale(0.95); }
 .sb-badge-card { top: 8px; bottom: auto; }
 
 /* ---------- player revelado: botão "Ocultar" ---------- */
@@ -161,32 +194,46 @@ a#thumbnail:has(> .sb-badge),
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  height: 32px;
+  height: var(--sb-h);
   padding: 0 12px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 999px;
-  background: rgba(15, 15, 15, 0.6);
+  border: 1px solid var(--sb-glass-border);
+  border-radius: var(--sb-pill);
+  background: var(--sb-glass);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-  color: #fff;
-  font: 500 13px/30px Roboto, Arial, sans-serif;
+  color: var(--sb-fg);
+  font: 500 var(--sb-text)/30px var(--sb-font);
   white-space: nowrap;
   -webkit-font-smoothing: antialiased;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.2s, background 0.15s, color 0.15s;
+  transition: opacity 0.2s, background-color var(--sb-fast), color var(--sb-fast), transform var(--sb-fast);
 }
 .sb-player-rehide .sb-icon { width: 14px; height: 14px; }
 #movie_player:hover .sb-player-rehide,
 #movie_player.paused-mode .sb-player-rehide,
 #shorts-player:hover .sb-player-rehide { opacity: 1; }
-.sb-player-rehide:hover { background: #fff; color: #0f0f0f; }
+.sb-player-rehide:hover { background: var(--sb-primary); color: var(--sb-primary-fg); }
+.sb-player-rehide:active { transform: scale(0.97); }
 
 /* ---------- X ---------- */
+html[data-sb-site="x"] {
+  --sb-font: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
 html[data-sb-site="x"] [data-sb="blur"],
 html[data-sb-site="x"] .sb-overlay { border-radius: 0; }
-html[data-sb-site="x"] .sb-pill { font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
 /* selo em cima da mídia: canto superior esquerdo (embaixo fica o "ALT" do X) */
-html[data-sb-site="x"] .sb-badge { top: 8px; bottom: auto; font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+html[data-sb-site="x"] .sb-badge { top: 8px; bottom: auto; }
 /* post só com texto: canto inferior esquerdo, abaixo do avatar */
 html[data-sb-site="x"] .sb-badge-card { top: auto; bottom: 12px; left: 16px; }
+
+/* ---------- movimento ---------- */
+@keyframes sb-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-overlay, .sb-pill, .sb-badge, .sb-player-overlay, .sb-player-btn, .sb-player-rehide,
+  [data-sb="revealed"] > * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

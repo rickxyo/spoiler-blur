@@ -1,5 +1,8 @@
 let state = { ...SB_DEFAULTS, groups: [] };
 const openGroups = new Set();
+
+// marcações de animação: valem só para o próximo render
+const motion = { opened: null, closed: null, created: null, eye: null };
 const $ = (s) => document.querySelector(s);
 
 const splitTerms = (s) => s.split(',').map((t) => t.trim()).filter(Boolean);
@@ -90,21 +93,24 @@ function renderGroup(g) {
     el('span', { className: 'count', textContent: on ? countLabel(g.terms.length) : 'pausado' })
   ]);
   toggle.addEventListener('click', () => {
-    isOpen ? openGroups.delete(g.id) : openGroups.add(g.id);
+    if (isOpen) { openGroups.delete(g.id); motion.closed = g.id; }
+    else { openGroups.add(g.id); motion.opened = g.id; }
     render();
   });
 
   // olho: riscado = borrando, aberto = pausado
   const eye = iconButton(on ? 'eye-off' : 'eye', on ? `Pausar "${g.name}"` : `Ativar "${g.name}"`, () => {
     g.enabled = !on;
+    motion.eye = g.id;
     save();
-  }, on ? 'eye-on' : '');
+  }, (on ? 'eye-on' : '') + (motion.eye === g.id ? ' popping' : ''));
   eye.setAttribute('aria-pressed', String(on));
   eye.dataset.focus = `${g.id}:eye`;
 
   const remove = iconButton('x', `Apagar "${g.name}"`, () => deleteGroup(g));
 
-  const box = el('div', { className: 'group' + (isOpen ? ' open' : '') + (on ? '' : ' off') }, [
+  const anim = motion.opened === g.id ? ' entering' : motion.closed === g.id ? ' leaving' : motion.created === g.id ? ' created' : '';
+  const box = el('div', { className: 'group' + (isOpen ? ' open' : '') + (on ? '' : ' off') + anim }, [
     el('div', { className: 'head' }, [toggle, eye, remove])
   ]);
   if (!isOpen) return box;
@@ -166,6 +172,7 @@ function render() {
   state.groups.forEach((g) => list.append(renderGroup(g)));
 
   focusKey(focused);
+  motion.opened = motion.closed = motion.created = motion.eye = null;
 }
 
 sbLoad((s) => { state = s; render(); });
@@ -179,6 +186,7 @@ $('#form').addEventListener('submit', (e) => {
   if (!g) {
     g = { id: newId(), name, terms: [] };
     state.groups.push(g);
+    motion.created = g.id;
   }
   addTerms(g, terms);
   openGroups.add(g.id);

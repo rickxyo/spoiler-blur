@@ -28,6 +28,10 @@
   --text: 13px;
   --text-sm: 12px;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* movimento */
+  --fast: .15s;
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
 }
 
 * { box-sizing: border-box; }
@@ -193,6 +197,30 @@ button { font: inherit; color: inherit; }
 .segmented label:has(input:checked) { border-color: var(--fg); background: var(--surface-hover); color: var(--fg); }
 .segmented label:has(input:focus-visible) { outline: 2px solid var(--ring); outline-offset: 2px; }
 
+/* ---------- movimento (sutil e rápido) ---------- */
+.btn, .icon-btn, .site-chip, .segmented label { transition-property: background-color, border-color, color, transform; transition-duration: var(--fast); }
+.btn:active, .site-chip:active, .segmented label:active { transform: scale(.97); }
+.icon-btn:active { transform: scale(.9); }
+
+/* tema abrindo / fechando */
+.group.entering .body { animation: sb-reveal var(--fast) var(--ease-out); }
+.group.entering .chev { animation: sb-chev-open var(--fast) var(--ease-out); }
+.group.leaving .chev { animation: sb-chev-close var(--fast) var(--ease-out); }
+/* olho trocando de estado */
+.icon-btn.popping .icon { animation: sb-pop .18s var(--ease-out); }
+/* tema novo aparecendo na lista */
+.group.created { animation: sb-reveal .2s var(--ease-out); }
+
+@keyframes sb-reveal { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@keyframes sb-chev-open { from { transform: rotate(0deg); } to { transform: rotate(90deg); } }
+@keyframes sb-chev-close { from { transform: rotate(90deg); } to { transform: rotate(0deg); } }
+@keyframes sb-pop { 0% { transform: scale(.6); opacity: .4; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes sb-toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
 /* ---------- toast (desfazer) ---------- */
 .toast {
   position: fixed; left: 12px; right: 12px; bottom: 12px;
@@ -201,6 +229,7 @@ button { font: inherit; color: inherit; }
   border: 1px solid var(--border-strong); border-radius: var(--radius-lg);
   background: var(--surface); box-shadow: 0 8px 24px rgba(0, 0, 0, .5);
 }
+.toast:not([hidden]) { animation: sb-toast-in .2s var(--ease-out); }
 .toast[hidden] { display: none; }
 body:has(.toast:not([hidden])) { padding-bottom: 64px; } /* a barra não cobre o conteúdo */
 .toast-msg { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
