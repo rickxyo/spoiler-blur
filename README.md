@@ -75,7 +75,7 @@ Não há permissão de abas, histórico, downloads, cookies ou "ler todos os sit
 
 ### Onde ficam seus dados
 
-Seus temas ficam salvos no armazenamento de extensões do próprio navegador (`chrome.storage.sync`). No Chrome com sincronização ativada, eles acompanham sua conta Google entre computadores; no Brave, ficam só naquele navegador. Ao desinstalar a extensão, tudo é apagado. Os vídeos que você revelou ficam só na memória da aba e voltam a ficar borrados ao recarregar a página.
+Seus temas ficam salvos no armazenamento de extensões do próprio navegador (`chrome.storage.sync`). No Chrome com sincronização ativada, eles acompanham sua conta Google entre computadores; no Brave, ficam só naquele navegador. Ao desinstalar a extensão, tudo é apagado. A política de privacidade completa está em [PRIVACY.md](PRIVACY.md). Os vídeos que você revelou ficam só na memória da aba e voltam a ficar borrados ao recarregar a página.
 
 ### Confira você mesmo
 
